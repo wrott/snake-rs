@@ -1,5 +1,6 @@
 extern crate ncurses;
 extern crate rand;
+
 use ncurses::*;
 
 #[derive(PartialEq)]
@@ -95,7 +96,7 @@ impl Board {
             Direction::Down => {
                 new_y += 1;
             }
-            Direction::RIGHT => {
+            Direction::Right => {
                 new_x += 1;
             }
             Direction::Left => {
