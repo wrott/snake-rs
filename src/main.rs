@@ -4,16 +4,16 @@ use ncurses::*;
 
 #[derive(PartialEq)]
 enum Status {
-    SUCCESS,
-    FAILURE,
+    Success,
+    Failure,
 }
 
 #[derive(Clone, Copy, Debug)]
 enum Direction {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT,
+    Up,
+    Down,
+    Left,
+    Right,
 }
 
 #[derive(Clone, Copy, PartialEq)]
@@ -67,21 +67,21 @@ impl Board {
     fn move_snake(&mut self, dir: Direction) -> Status {
         let beginning = self.next_move(dir);
         if beginning.is_err() {
-            return Status::FAILURE;
+            return Status::Failure;
         }
         let point: Point = beginning.unwrap();
 
         if self.snake.contains(&point) {
-            return Status::FAILURE;
+            return Status::Failure;
         }
         if self.foods.contains(&point) {
             self.eat_food(point);
             self.foods.retain(|&x| x != point);
             self.add_new_food();
-            return Status::SUCCESS;
+            return Status::Success;
         }
         self.move_to(point);
-        Status::SUCCESS
+        Status::Success
     }
 
     fn next_move(&self, dir: Direction) -> Result<Point, ()> {
@@ -89,16 +89,16 @@ impl Board {
         let mut new_x = head.x as i32;
         let mut new_y = head.y as i32;
         match dir {
-            Direction::UP => {
+            Direction::Up => {
                 new_y -= 1;
             }
-            Direction::DOWN => {
+            Direction::Down => {
                 new_y += 1;
             }
             Direction::RIGHT => {
                 new_x += 1;
             }
-            Direction::LEFT => {
+            Direction::Left => {
                 new_x -= 1;
             }
         }
@@ -121,14 +121,14 @@ fn display_points(snake: &[Point], symbol: chtype) {
 fn get_next_move(previous: Direction) -> Direction {
     let ch = getch();
     match (ch, previous) {
-        (KEY_LEFT, Direction::RIGHT) => previous,
-        (KEY_RIGHT, Direction::LEFT) => previous,
-        (KEY_UP, Direction::DOWN) => previous,
-        (KEY_DOWN, Direction::UP) => previous,
-        (KEY_RIGHT, _) => Direction::RIGHT,
-        (KEY_LEFT, _) => Direction::LEFT,
-        (KEY_DOWN, _) => Direction::DOWN,
-        (KEY_UP, _) => Direction::UP,
+        (KEY_LEFT, Direction::Right) => previous,
+        (KEY_RIGHT, Direction::Left) => previous,
+        (KEY_UP, Direction::Down) => previous,
+        (KEY_DOWN, Direction::Up) => previous,
+        (KEY_RIGHT, _) => Direction::Right,
+        (KEY_LEFT, _) => Direction::Left,
+        (KEY_DOWN, _) => Direction::Down,
+        (KEY_UP, _) => Direction::Up,
         _ => previous,
     }
 }
@@ -144,7 +144,7 @@ fn main() {
     let mut xmax: i32 = 0;
     let mut ymax: i32 = 0;
     getmaxyx(stdscr(), &mut ymax, &mut xmax);
-    let mut dir = Direction::RIGHT;
+    let mut dir = Direction::Right;
 
     let mut board = Board {
         xmax: xmax as u32,
@@ -154,8 +154,8 @@ fn main() {
     };
 
     board.initialize();
-    let mut status = Status::SUCCESS;
-    while status == Status::SUCCESS {
+    let mut status = Status::Success;
+    while status == Status::Success {
         clear();
         display_points(&board.snake, ACS_DEGREE());
         display_points(&board.foods, ACS_DIAMOND());
