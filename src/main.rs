@@ -157,7 +157,7 @@ fn main() {
     let mut status = Status::SUCCESS;
     while status == Status::SUCCESS {
         clear();
-        display_points(&board.snake, ACS_BLOCK());
+        display_points(&board.snake, ACS_DEGREE());
         display_points(&board.foods, ACS_DIAMOND());
         refresh();
         dir = get_next_move(dir);
