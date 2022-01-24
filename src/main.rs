@@ -59,7 +59,7 @@ impl Board {
         self.snake.push(Point { x: 2, y: 3 });
         self.snake.push(Point { x: 2, y: 2 });
 
-        let num_food = self.xmax * self.ymax / 10;
+        let num_food = self.xmax * self.ymax % 10;
         for _ in 1..num_food {
             self.add_new_food();
         }
